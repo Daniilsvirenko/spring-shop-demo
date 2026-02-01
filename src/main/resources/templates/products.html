@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Мой Магазин</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+        .price-low { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>Список товаров</h1>
+<div style="margin-bottom: 20px; padding: 15px; background: #eee; border-radius: 5px;">
+    <h3>Добавить новый товар</h3>
+    <form action="/store/new" method="post">
+        <input type="text" name="name" placeholder="Название товара" required>
+        <input type="number" name="price" placeholder="Цена" required>
+        <button type="submit">Сохранить в Базу</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Действие</th>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Цена</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${products}">
+        <td>
+            <form th:action="@{/store/delete/{id}(id=${p.id})}" method="post">
+                <button type="submit" style="color: red;">Удалить 🗑</button>
+            </form>
+        </td>
+        <td th:text="${p.id}">1</td>
+        <td th:text="${p.name}">iPhone</td>
+        <td th:text="${p.price}" th:class="${p.price < 5000} ? 'price-low' : ''">9999</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+### 1. Получить список (GET)
+GET http://localhost:8080/catalog
+
+### 2. Добавить товар (POST)
+POST http://localhost:8080/catalog
+Content-Type: application/json
+
+{
+  "name": "Sony PlayStation 5",
+  "price": 50000
+}
+
+### 3. Снова проверить список (GET) - там должен появиться Sony!
+GET http://localhost:8080/catalog
