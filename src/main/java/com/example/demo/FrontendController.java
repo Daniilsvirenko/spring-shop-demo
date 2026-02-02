@@ -40,4 +40,9 @@ public class FrontendController {
         shopService.deleteProduct(id);
         return "redirect:/store";
     }
+
+    @GetMapping("/about")
+    public String showAboutPage() {
+        return "about"; // Вернет about.html
+    }
 }
