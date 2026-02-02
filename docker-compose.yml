@@ -1,0 +1,24 @@
+services:
+  # --- Контейнер 1: Наше Java приложение ---
+  app:
+    build: .                         # Строим из текущей папки (используя Dockerfile)
+    ports:
+      - "8080:8080"                  # Пробрасываем порт (Внешний:Внутренний)
+    environment:
+      # Переопределяем настройки из application.properties
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shop_db  # Обрати внимание: 'db' вместо 'localhost'
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root   # Пароль для базы внутри Докера (любой)
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db                           # Ждем, пока запустится база
+
+  # --- Контейнер 2: База данных PostgreSQL ---
+  db:
+    image: postgres:16               # Берем готовый официальный образ
+    environment:
+      - POSTGRES_DB=shop_db          # Имя базы при создании
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root       # Тот же пароль, что выше
+    ports:
+      - "5432:5432"                  # Чтобы можно было подключиться через IntelliJ (опционально)
