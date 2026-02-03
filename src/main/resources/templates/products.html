@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Мой Магазин</title>
     <style>
@@ -13,13 +14,14 @@
 <body>
 
 <h1>Список товаров</h1>
-<div style="margin-bottom: 20px; padding: 15px; background: #eee; border-radius: 5px;">
-    <h3>Добавить новый товар</h3>
-    <form action="/store/new" method="post">
-        <input type="text" name="name" placeholder="Название товара" required>
+<div sec:authorize="hasRole('ADMIN')">
+    <h2>Добавить новый товар</h2>
+    <form method="post" th:action="@{/store}">
+        <input type="text" name="name" placeholder="Название" required>
         <input type="number" name="price" placeholder="Цена" required>
-        <button type="submit">Сохранить в Базу</button>
+        <button type="submit">Добавить</button>
     </form>
+    <hr>
 </div>
 
 <table>
@@ -34,7 +36,7 @@
     <tbody>
     <tr th:each="p : ${products}">
         <td>
-            <form th:action="@{/store/delete/{id}(id=${p.id})}" method="post">
+            <form th:action="@{/store/delete/{id}(id=${p.id})}" method="post" sec:authorize="hasRole('ADMIN')">
                 <button type="submit" style="color: red;">Удалить 🗑</button>
             </form>
         </td>
@@ -44,6 +46,20 @@
     </tr>
     </tbody>
 </table>
+<hr>
+<div sec:authorize="isAuthenticated()">
+    <p>
+        Вы вошли как: <b sec:authentication="name"></b>
+        <span sec:authorize="hasRole('ADMIN')">(Администратор)</span>
+    </p>
 
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+    <a href="/login">Войти в систему</a>
+</div>
 </body>
 </html>
