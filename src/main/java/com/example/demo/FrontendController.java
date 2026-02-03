@@ -26,7 +26,7 @@ public class FrontendController {
         return "products";
     }
 
-    @PostMapping("/store/new")
+    @PostMapping("/store")
     public String addNewProduct(Product product) {
         // 1. Сохраняем товар (Spring сам создал объект product из полей формы)
         shopService.saveProduct(product);
