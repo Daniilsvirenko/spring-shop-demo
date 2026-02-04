@@ -12,17 +12,6 @@ public class ShopService {
 
     public ShopService() {}
 
-    @PostConstruct
-    public void init() {
-        // Проверка, чтобы не дублировать данные при перезапусках (если база не очищается)
-        if (repository.count() == 0) {
-            repository.save(new Product("Iphone", 9999));
-            repository.save(new Product("Smartphone", 2311));
-            repository.save(new Product("Samsung Galaxy", 7996));
-            System.out.println("База данных заполнена тестовыми товарами!");
-        }
-    }
-
     public List<Product> getProductList() {
         return repository.findAll();
     }
